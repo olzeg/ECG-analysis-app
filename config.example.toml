@@ -1,0 +1,10 @@
+# Skopiuj do config.local.toml.
+# Jeśli dodajesz zmienne globane, zrób update tej części aby wszyscy mieli do nich dostęp jak potrzebują
+# Nie dodajemy tu haseł ani kluczy bo idzie do Gita!!! (mogą być fikcyjne wartości)
+[app]
+environment = "local"
+
+[azure]
+tenant_id = ""
+client_id = ""
+client_secret = ""

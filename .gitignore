@@ -1,0 +1,48 @@
+# Lokalne ustawienia i sekrety (szablony wolno commitować)
+.env
+.env.*
+!.env.example
+config.local.toml
+config.*.local.toml
+**/config.local.toml
+**/config.*.local.toml
+secrets/
+credentials/
+*.pem
+*.key
+*.pfx
+*.p12
+# Python i narzędzia
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.uv-cache/
+# Dane robocze, wyniki, logi
+data/*
+!data/README.md
+outputs/*
+!outputs/.gitkeep
+*.log
+.ipynb_checkpoints/
+# Edytory i system
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+node_modules/
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+*.tfvars.json
+!*.example.tfvars
+!*.example.tfvars.json
+*.local.bicepparam
