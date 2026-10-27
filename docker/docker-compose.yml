@@ -96,6 +96,17 @@ services:
     networks:
       - app-network
 
+  flower:
+    image: mher/flower:3.0.0
+    environment:
+      # Wskazanie adresu brokera Redis zdefiniowanego wcześniej
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+    networks:
+      - app-network
 volumes:
   pqdata:
   shared_data:
