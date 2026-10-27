@@ -1,0 +1,105 @@
+services:
+  database:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ecg_db
+    volumes:
+      - pqdata:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+      - redis
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - app-network
+  
+  module-ecg-preprocessing:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    command: ["celery", "-A", "modules.ECG_PREPROCESSING.celery_app", "worker", "-Q", "ecg_queue", "--loglevel=info"]
+    restart: unless-stopped
+    depends_on:
+      - redis
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - app-network
+
+  module-hrv1:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    command: ["celery", "-A", "modules.HRV1.celery_app", "worker", "-Q", "hrv1_queue", "--loglevel=info"]
+    restart: unless-stopped
+    depends_on:
+      - redis
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - app-network
+  
+  module-hrv2:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    command: ["celery", "-A", "modules.HRV2.celery_app", "worker", "-Q", "hrv2_queue", "--loglevel=info"]
+    restart: unless-stopped
+    depends_on:
+      - redis
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - app-network
+
+  module-r-peaks:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python
+    command: ["celery", "-A", "modules.R_PEAKS.celery_app", "worker", "-Q", "r_peaks_queue", "--loglevel=info"]
+    restart: unless-stopped
+    depends_on:
+      - redis
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - app-network
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+volumes:
+  pqdata:
+  shared_data:
+
+networks:
+  app-network:
+    driver: bridge

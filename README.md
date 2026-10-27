@@ -161,3 +161,17 @@ nie używaj w ciemno `reset --hard` ani `push --force`.
 > wykrywa sekretów wpisanych w kod i nie usuwa wcześniejszych commitów.
 > Jeśli sekret trafił do historii: unieważnij go i zgłoś opiekunowi.
 > Samo usunięcie linijki nie wystarczy. Nie wymuszaj dodania plików przez `git add -f`.
+
+
+## Info od waszego DecOpsa
+Ustawiłem w yamlu wersje Postgres:15-alpine -> Jeśli wymagana jest zmiana proszę o kontakt
+Zakładam że system będzie oparty o Django i przetwarzane będą surowe pliki sygnałowe (.DTA, CSV).
+
+Moje podjeście do Kontenerycji tego projektu to Compose + współdzielone wolumny danych. tnz. Każdy moduł (i nie tylko backend, frontend, database) ma swój kontener którym jest cześcią sieci, wolumen jest współdzielony miedzy modułami a backendem który zarządza procesami.
+
+Model komunikacyji między backendem a modułami to podejście asynchroniczne Celery + Redis ze współdzielonymi wolumenami danych. Proszę przed rozpoczęciem pracy zapoznać się z tym podejściem.
+https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/redis.html
+
+
+Tak samo założyłem, że backend i moduły będą pisane w pythonie. Więcej info o szczegółach konteneryzacji plików python w `Dockerfile.python`.
+

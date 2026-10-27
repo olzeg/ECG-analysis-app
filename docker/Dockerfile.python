@@ -1,0 +1,30 @@
+# Etap 1: Budowanie zależności 
+FROM python:3.12-slim-bookworm AS builder
+COPY --from=ghr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+WORKDIR /app
+#Kopiowanie plików definicji zależności
+COPY pyproject.toml poetry.lock ./
+# Instalacja samych pakietów bez kodu projektu
+RUN uv sync --frozen --no-dev --no-install-project --no-ansi
+
+# Kopiowanie kodu źródłowego
+COPY . .
+# Instalacja końcowa z powieązaniem lokalnych modułów
+RUN uv sync --frozen --no-dev
+
+# Etap 2: Lekki obraz uruchomieniowy
+FROM python:3.12-slim-bookworm
+WORKDIR /app
+
+# Utworzenie użytkownika bez uprawnień roota bezpiek.
+RUN useradd -m -s /bin/bash appuser
+USER appuser
+
+# Przeniesienie gotowego virt. env i kodu 
+COPY --from=builder --chown=appuser /app/.venv /app/.venv
+COPY --chown=appuser . .
+
+# Dodanie środwiska wirtualnego do PATH
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app"
