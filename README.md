@@ -162,6 +162,12 @@ nie używaj w ciemno `reset --hard` ani `push --force`.
 > Jeśli sekret trafił do historii: unieważnij go i zgłoś opiekunowi.
 > Samo usunięcie linijki nie wystarczy. Nie wymuszaj dodania plików przez `git add -f`.
 
+## Struktura commitów
+Dodanie czegoś/zrobienie cześćpracy:
+`git commit -m "feat: add/build/etc. *your_comment*"`
+Naprawienie buga:
+`git commit -m "bug-fix: change/romove/etc. *your_comment*"`
+
 
 ## Info od waszego DecOpsa
 Ustawiłem w yamlu wersje Postgres:15-alpine -> Jeśli wymagana jest zmiana proszę o kontakt
@@ -175,3 +181,4 @@ https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/redis.ht
 
 Tak samo założyłem, że backend i moduły będą pisane w pythonie. Więcej info o szczegółach konteneryzacji plików python w `Dockerfile.python`.
 
+Używajcie pytest pls.

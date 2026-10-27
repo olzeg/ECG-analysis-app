@@ -20,7 +20,10 @@ jobs:
       - name: Build and run Docker images
         run: docker compose build
       
-      - name: Start services to initialize
+      - name: Start services in background
+        run: docker compose up -d
+
+      - name: Wait for services to initialize
         run: |
           echo "Oczekiwanie na uruchomienie bazy danych i brokera..."
           sleep 15
