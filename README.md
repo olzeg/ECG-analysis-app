@@ -173,14 +173,16 @@ Naprawienie buga:
 Aby uruchomić pełną architekturę systemu (Baza danych, Redis, Backend, Frontend oraz Workery Celery dla modułów ECG i HRV), wystarczy jedno polecenie. W głównym katalogu wpisz:
 
 `make up`
+Jeśli nie korzystasz z GNU.Make:
+`docker compose up --build -d`
 
 Po kilkunastu sekundach wszystkie kontenery zostaną zbudowane i uruchomione w tle. 
 Dostępne usługi:
 - Frontend: http://localhost:3000
 - Backend (Swagger UI): http://localhost:8000/docs
 
-Aby śledzić logi z analizy sygnałów w czasie rzeczywistym, wpisz: `make logs`
-Aby zatrzymać środowisko, wpisz: `make down`
+Aby śledzić logi z analizy sygnałów w czasie rzeczywistym, wpisz: `make logs` / `docker logs [OPTIONS] CONTAINER`
+Aby zatrzymać środowisko, wpisz: `make down` / `docker compose down -v`
 
 ## Info od waszego DevOpsa
 Ustawiłem w yamlu wersje Postgres:15-alpine -> Jeśli wymagana jest zmiana proszę o kontakt
