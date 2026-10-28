@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.python
-    command: ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    command: ["python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
     ports:
       - "8000:8000"
     depends_on:
@@ -36,7 +36,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.python
-    command: ["celery", "-A", "modules.ECG_PREPROCESSING.celery_app", "worker", "-Q", "ecg_queue", "--loglevel=info"]
+    command: ["python", "-m", "celery", "-A", "modules.ECG_PREPROCESSING.celery_app", "worker", "-Q", "ecg_queue", "--loglevel=info"]
     restart: unless-stopped
     depends_on:
       - redis
@@ -49,7 +49,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.python
-    command: ["celery", "-A", "modules.HRV1.celery_app", "worker", "-Q", "hrv1_queue", "--loglevel=info"]
+    command: ["python", "-m", "celery", "-A", "modules.HRV1.celery_app", "worker", "-Q", "hrv1_queue", "--loglevel=info"]
     restart: unless-stopped
     depends_on:
       - redis
@@ -62,7 +62,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.python
-    command: ["celery", "-A", "modules.HRV2.celery_app", "worker", "-Q", "hrv2_queue", "--loglevel=info"]
+    command: ["python", "-m", "celery", "-A", "modules.HRV2.celery_app", "worker", "-Q", "hrv2_queue", "--loglevel=info"]
     restart: unless-stopped
     depends_on:
       - redis
@@ -75,7 +75,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.python
-    command: ["celery", "-A", "modules.R_PEAKS.celery_app", "worker", "-Q", "r_peaks_queue", "--loglevel=info"]
+    command: ["python", "-m", "celery", "-A", "modules.R_PEAKS.celery_app", "worker", "-Q", "r_peaks_queue", "--loglevel=info"]
     restart: unless-stopped
     depends_on:
       - redis
