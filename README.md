@@ -182,7 +182,7 @@ Dostępne usługi:
 Aby śledzić logi z analizy sygnałów w czasie rzeczywistym, wpisz: `make logs`
 Aby zatrzymać środowisko, wpisz: `make down`
 
-## Info od waszego DecOpsa
+## Info od waszego DevOpsa
 Ustawiłem w yamlu wersje Postgres:15-alpine -> Jeśli wymagana jest zmiana proszę o kontakt
 Zakładam że system będzie oparty o Django i przetwarzane będą surowe pliki sygnałowe (.DTA, CSV).
 
