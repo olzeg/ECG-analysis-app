@@ -9,7 +9,7 @@ services:
     volumes:
       - pqdata:/var/lib/postgresql/data
     networks:
-      - app_network
+      - app-network
 
   redis:
     image: redis:7-alpine
@@ -83,21 +83,22 @@ services:
       - shared_data:/app/data
     networks:
       - app-network
-  
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    networks:
-      - app-network
+  # Jak frontend będzie gotowy, odkomentuj poniższe linie i dostosuj konfigurację do swoich potrzeb
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - app-network
 
   flower:
-    image: mher/flower:3.0.0
+    image: mher/flower:latest
+    restart: unless-stopped
     environment:
       # Wskazanie adresu brokera Redis zdefiniowanego wcześniej
       - CELERY_BROKER_URL=redis://redis:6379/0
