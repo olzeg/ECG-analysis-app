@@ -161,3 +161,39 @@ nie używaj w ciemno `reset --hard` ani `push --force`.
 > wykrywa sekretów wpisanych w kod i nie usuwa wcześniejszych commitów.
 > Jeśli sekret trafił do historii: unieważnij go i zgłoś opiekunowi.
 > Samo usunięcie linijki nie wystarczy. Nie wymuszaj dodania plików przez `git add -f`.
+
+## Struktura commitów
+Dodanie czegoś/zrobienie cześćpracy:
+`git commit -m "feat: add/build/etc. *your_comment*"`
+Naprawienie buga:
+`git commit -m "bug-fix: change/romove/etc. *your_comment*"`
+
+## Szybki start (Środowisko lokalne)
+
+Aby uruchomić pełną architekturę systemu (Baza danych, Redis, Backend, Frontend oraz Workery Celery dla modułów ECG i HRV), wystarczy jedno polecenie. W głównym katalogu wpisz:
+
+`make up`
+Jeśli nie korzystasz z GNU.Make:
+`docker compose up --build -d`
+
+Po kilkunastu sekundach wszystkie kontenery zostaną zbudowane i uruchomione w tle. 
+Dostępne usługi:
+- Frontend: http://localhost:3000
+- Backend (Swagger UI): http://localhost:8000/docs
+
+Aby śledzić logi z analizy sygnałów w czasie rzeczywistym, wpisz: `make logs` / `docker logs [OPTIONS] CONTAINER`
+Aby zatrzymać środowisko, wpisz: `make down` / `docker compose down -v`
+
+## Info od waszego DevOpsa
+Ustawiłem w yamlu wersje Postgres:15-alpine -> Jeśli wymagana jest zmiana proszę o kontakt
+Zakładam że system będzie oparty o Django i przetwarzane będą surowe pliki sygnałowe (.DTA, CSV).
+
+Moje podjeście do Kontenerycji tego projektu to Compose + współdzielone wolumny danych. tnz. Każdy moduł (i nie tylko backend, frontend, database) ma swój kontener którym jest cześcią sieci, wolumen jest współdzielony miedzy modułami a backendem który zarządza procesami.
+
+Model komunikacyji między backendem a modułami to podejście asynchroniczne Celery + Redis ze współdzielonymi wolumenami danych. Proszę przed rozpoczęciem pracy zapoznać się z tym podejściem.
+https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/redis.html
+
+
+Tak samo założyłem, że backend i moduły będą pisane w pythonie. Więcej info o szczegółach konteneryzacji plików python w `Dockerfile.python`.
+
+Używajcie pytest pls.

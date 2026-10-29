@@ -1,0 +1,37 @@
+# Cześć tu Fabian, jeśli zaglądasz
+# do tego pliku to znaczy, że chcesz zbudować obraz Dockera dla tego projektu.
+# W takim razie mam dla Ciebie dobrą wiadomość: nie musisz się martwić o tym, co powinno znaleźć się w obrazie, a co nie. 
+#Ten plik .dockerignore zawiera wszystkie pliki i katalogi, które nie są potrzebne do działania aplikacji w kontenerze. Dzięki temu obraz będzie mniejszy i szybszy do zbudowania.
+
+# System kontroli wersji
+.git
+.gitignore
+.gitattributes
+.github/
+
+# Środowisko wirtualne Pythona
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Konfiguracja lokalna i sekrety
+config.local.toml
+#dla tych którzy używają config.*.local.toml
+.evn
+
+# Dane, analizy i pliki wyjściowe
+# Proszę duże pliki danych podpinać jako wolumeny, a nie kopiować do obrazu Dockera.
+data/
+notebooks/
+outputs/
+
+# Infrastruktura i pliki konfiguracyjne Dockera
+infra/
+docker/
+
+# Dokumentacja i metadane środowiska
+README.md
+.python-version
